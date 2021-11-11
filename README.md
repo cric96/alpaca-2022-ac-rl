@@ -24,4 +24,12 @@ pip install -r requirements.txt
 ./simulation.sh
 ```
 ### Plots
-[Traning Image](https://github.com/cric96/experiment-2021-alpaca-ac-rl/releases/download/0.0.1/average-error-360_045_.pdf)
+|  |  |
+|---|---|
+|![Traning Image](https://github.com/cric96/experiment-2021-alpaca-ac-rl/releases/download/0.0.1/mean-error.png)  |  |
+|---|---|
+|![Traning Image](https://github.com/cric96/experiment-2021-alpaca-ac-rl/releases/download/0.0.1/average-error-80_045_.png)  |  |
+|---|---|
+|![Traning Image](https://github.com/cric96/experiment-2021-alpaca-ac-rl/releases/download/0.0.1/average-error-360_045_.png)  |  |
+|---|---|
+|![Traning Image](https://github.com/cric96/experiment-2021-alpaca-ac-rl/releases/download/0.0.1/average-error-760_045_.png)  |  |
