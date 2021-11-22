@@ -2,24 +2,28 @@ incarnation: scafi
 
 variables:
   # SIMULATION VARIABLE
-  last_greedy_episodes: { formula: 50.0 }
-  learning_episodes: { formula: 0.0 }
+  last_greedy_episodes: { formula: 0.0 }
+  learning_episodes: { formula: 10.0 }
   episodes: &episodes { formula: 'learning_episodes + last_greedy_episodes' }
   greedy_each: { formula: learning_episodes }
   episode: &episode { min: 0, max: *episodes, step: 1, default: 0 }
   episode_length: &episode_length { formula: 60 }
   learn: &learn
     language: scala
-    formula: 'false'
+    formula: >
+      val ep = episode.asInstanceOf[java.lang.Double].intValue;
+      val each = greedy_each.asInstanceOf[java.lang.Double].intValue;
+      val learn_ep = learning_episodes.asInstanceOf[java.lang.Double].intValue;
+      learn_ep != 0 && (ep == 0 || ep % each != 0) && ep < learn_ep
   range: &range { formula: 8.0 }
   initial_value: &initial_value { formula: 0.0 }
-  gamma: &gamma { formula: 0.90 }
+  gamma: &gamma { formula: 0.9 }
   window_size: &window_size { formula: 3 }
   trajectory_size: &trajectory_size { formula: 2 }
   qtable_folder: &qtable_folder { formula: "'\"qtables\"'" }
   clock_folder: &clock_folder { formula: "'\"clock\"'" }
-  right_source: &right_source { formula: '40'}
-  left_source: &left_source { formula: '59' }
+  right_source: &right_source { formula: 'learn ? 59 : 40'}
+  left_source: &left_source { formula: 'learn ? 40 : 59' }
   # PROGRAM VARIABLES
   stop_right_source: &stop_right_source { formula: 20 }
 
@@ -27,9 +31,9 @@ variables:
 _alpha: &alpha >
   it.unibo.learning.TimeVariable.independent(0.5)
 _beta: &beta >
-  it.unibo.learning.TimeVariable.independent(0.01)
+  it.unibo.learning.TimeVariable.independent(0.05)
 _epsilon: &epsilon >
-  it.unibo.learning.TimeVariable.independent(0.0)
+  it.unibo.learning.TimeVariable.independent(0.9)
 
 _actions: &actions >
   cats.data.NonEmptySet.of(0, 1, 2)
@@ -48,7 +52,7 @@ deployments:
     programs:
       - time-distribution: 1
         type: Event
-        actions: { type: RunScafiProgram, parameters: [it.unibo.scafi.casestudy.SwapSourceOnlineMax, 5.0] }
+        actions: { type: RunScafiProgram, parameters: [it.unibo.scafi.casestudy.SwapSourceReinforce, 5.0] }
       - program: send
 
     contents:
@@ -106,12 +110,6 @@ deployments:
         concentration: 0
       - molecule: err_flexHopCount
         concentration: 0
-      - molecule: err_bisHopCount
-        concentration: 0
-      - molecule: err_crfHopCount
-        concentration: 0
-      - molecule: err_svdHopCount
-        concentration: 0
 export:
   - time
   - molecule: refG
@@ -139,12 +137,3 @@ export:
   - molecule: err_flexHopCount
     value-filter: onlyfinite
     aggregators: [sum]
-  - molecule: err_bisHopCount
-    value-filter: onlyfinite
-    aggregators: [ sum ]
-  - molecule: err_crfHopCount
-    value-filter: onlyfinite
-    aggregators: [ sum ]
-  - molecule: err_svdHopCount
-    value-filter: onlyfinite
-    aggregators: [ sum ]

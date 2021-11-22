@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter
 val scalaLib: String by project
 val scala: String by project
 val batch: String by project
-
+val deepLearningVersion = "1.0.0-M1.1"
 plugins {
     java
     scala
@@ -41,6 +41,12 @@ dependencies {
     // uPickle dependency
     implementation("com.lihaoyi:upickle_${scala}:_")
     implementation("com.lihaoyi:os-lib_${scala}:_")
+    // Deep learning 4 j dependecies
+    implementation("org.deeplearning4j:deeplearning4j-core:${deepLearningVersion}")
+    implementation("org.nd4j:nd4j-native-platform:${deepLearningVersion}")
+    implementation("org.nd4j:nd4j-api:${deepLearningVersion}")
+    // ScalaPy dependencies
+    implementation("me.shadaj:scalapy-core_${scala}:_")
     // Tests dependency
     testImplementation("org.scalatest:scalatest_${scala}:_")
     testImplementation("junit:junit:_")

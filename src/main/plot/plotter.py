@@ -156,10 +156,11 @@ def plot(config,content):
     t = plt.title(title_prefix[nf]+title)
     plt.subplots_adjust(top=.84) 
     suffix = (suffixes[nf] if nf in suffixes else "".join(map(str,pformat))) + "_" + parts_suffix
-    savefn = outdir+basefn+"_"+ suffix +".pdf"
+    savefn = outdir+basefn+"_"+ suffix
     print(("SAVE: " + savefn))
     plt.tight_layout()
-    plt.savefig(savefn, bbox_inches='tight', pad_inches = 0)  
+    plt.savefig(savefn + ".pdf", bbox_inches='tight', pad_inches = 0)
+    plt.savefig(savefn + ".png", bbox_inches='tight', pad_inches = 0)
     plt.close() 
 
 pp = pprint.PrettyPrinter(indent=4) # for logging purposes

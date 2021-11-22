@@ -1,14 +1,12 @@
 package it.unibo.scafi.casestudy
 
 import cats.data.NonEmptySet
-import it.unibo.alchemist.model.implementations.nodes.SimpleNodeManager
 import it.unibo.alchemist.model.scafi.ScafiIncarnationForAlchemist._
 import it.unibo.alchemist.tiggers.EndHandler
-import it.unibo.learning.{Clock, Q, QLearning, TimeVariable}
+import it.unibo.learning.{Clock, Q, TimeVariable}
 import it.unibo.scafi.casestudy.LearningProcess.RoundData
 import it.unibo.storage.LocalStorage
 
-import scala.jdk.CollectionConverters.IteratorHasAsScala
 import scala.util.Random
 
 /** Common variable/constants/behaviour that have hop count learning problem */
@@ -20,6 +18,7 @@ trait HopCountLike
     with BlockT
     with BlockG
     with FieldUtils
+    with CustomSpawn
     with TemporalStateManagement
     with FixedGradients {
   // Type alias

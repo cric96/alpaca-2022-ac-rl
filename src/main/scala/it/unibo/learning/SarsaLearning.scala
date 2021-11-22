@@ -15,7 +15,6 @@ object SarsaLearning {
       override def extractQFromTarget(target: SarsaState[S, A]): Q[S, A] = target.q
       override def initTargetFromQ(q: Q[S, A]): SarsaState[S, A] = SarsaState(q, None)
     }
-
   }
   // TODO check
   case class NStep[S, A](actions: NonEmptySet[A], alpha: TimeVariable[Double], gamma: Double, trajectorySize: Int)

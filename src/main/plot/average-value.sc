@@ -2,7 +2,6 @@
 // Dependency
 import $ivy.`com.lihaoyi::os-lib:0.7.8`
 import $ivy.`com.github.tototoshi::scala-csv:1.3.8`
-import $ivy.`org.plotly-scala::plotly-render:0.8.1`
 import $ivy.`me.shadaj::scalapy-core:0.5.0`
 // Proc
 import ammonite.ops._
@@ -64,6 +63,7 @@ def averageByIndicies(skip: Int, experimentName: String, indices: Int*): Any = {
   plt.xlabel("episodes")
   plt.title("training errors")
   plt.savefig(s"$imageOutputDirPy/mean-error.pdf")
+  plt.savefig(s"$imageOutputDirPy/mean-error.png")
   "Ok"
 }
 // Utility function
