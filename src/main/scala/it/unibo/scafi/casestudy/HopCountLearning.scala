@@ -10,7 +10,7 @@ import scala.language.reflectiveCalls
 import scala.util.Random
 
 trait HopCountLearning {
-  self: AggregateProgram =>
+  self: AggregateProgram with FieldUtils =>
   // TEMPLATE METHOD
   def source: Boolean
 
@@ -56,12 +56,19 @@ trait HopCountLearning {
           ev.target,
           ev.clock
         )
+        val q = learning.ops.extractQFromTarget(updateTargetLearning)
+        val neighInfluence = TimeVariable.exponentialDecayFunction(0.1, 1000).value(clock) * excludingSelf
+          .reifyField(nbr(q))
+          .values
+          .map(qNeigh => q(ev.state, action) - qNeigh(ev.state, action))
+          .sum
+
         val nextAction = epsilonGreedy(stateTPlus, learning.ops.extractQFromTarget(ev.target), clock)
         ev
           .focus(_.trajectory)
           .modify(trajectory => (ev.state, ev.action, reward) :: trajectory.toList)
           .focus(_.target)
-          .replace(updateTargetLearning)
+          .replace(learning.ops.initTargetFromQ(q.update(ev.state, action, q(ev.state, action) - neighInfluence)))
           .focus(_.clock)
           .modify(_.tick)
           .focus(_.output)

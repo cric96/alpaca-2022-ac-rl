@@ -4,5 +4,6 @@ import it.unibo.learning.QLearning
 
 trait SarsaBased {
   self: SwapSourceLike =>
-  lazy val learningAlgorithm = QLearning.Hysteretic[List[Int], Int](actions, alpha, beta, gamma)
+  lazy val learningAlgorithm: QLearning.Type[List[Action], Action] =
+    QLearning.Hysteretic[List[Int], Int](actions, alpha, beta, gamma)
 }
