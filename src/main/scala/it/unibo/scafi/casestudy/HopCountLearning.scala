@@ -57,7 +57,7 @@ trait HopCountLearning {
           ev.clock
         )
         val q = learning.ops.extractQFromTarget(updateTargetLearning)
-        val neighInfluence = TimeVariable.exponentialDecayFunction(0.1, 1000).value(clock) * excludingSelf
+        val neighInfluence = TimeVariable.decayByDivision(0.5, 0.7 - 0.5 + 0.01).value(clock) * excludingSelf
           .reifyField(nbr(q))
           .values
           .map(qNeigh => q(ev.state, action) - qNeigh(ev.state, action))
@@ -68,7 +68,7 @@ trait HopCountLearning {
           .focus(_.trajectory)
           .modify(trajectory => (ev.state, ev.action, reward) :: trajectory.toList)
           .focus(_.target)
-          .replace(learning.ops.initTargetFromQ(q.update(ev.state, action, q(ev.state, action) - neighInfluence)))
+          .replace(learning.ops.initTargetFromQ(q.update(ev.state, action, q(ev.state, action) + neighInfluence)))
           .focus(_.clock)
           .modify(_.tick)
           .focus(_.output)

@@ -1,10 +1,8 @@
 package it.unibo.scafi.casestudy
 
-import cats.data.NonEmptyList
 import it.unibo.alchemist.tiggers.EndHandler
 import it.unibo.learning.{Clock, Q, QLearning}
 import it.unibo.scafi.casestudy.LearningProcess.RoundData
-import monocle.syntax.all._
 class SwapSourceOnlineQD extends SwapSourceLike with SarsaBased {
   override lazy val learningAlgorithm = QLearning.Plain[List[Int], Int](actions, alpha, gamma)
 

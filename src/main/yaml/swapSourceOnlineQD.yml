@@ -29,7 +29,7 @@ variables:
 
 ## Time variables
 _alpha: &alpha >
-  it.unibo.learning.TimeVariable.exponentialDecayFunction(0.5, 1000)
+  it.unibo.learning.TimeVariable.decayByDivision(0.05, 0.7)
 _beta: &beta >
   it.unibo.learning.TimeVariable.independent(0.01)
 _epsilon: &epsilon >
