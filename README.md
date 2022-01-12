@@ -3,7 +3,7 @@
 
 This repository contains the experiments for *Towards Aggregate Computing With Machine Learning*.
 
-For more details about Aggregate Programming, please refer to this [site](https://apice.unibo.it/xwiki/bin/view/aggregate-computing/). 
+For more details about Aggregate Programming, please refer to this [site](https://apice.unibo.it/xwiki/bin/view/Themes/AggregateComputing). 
 ### Technology stack:
 -ScaFi: A scala toolchain for Aggregate Computing.
 -Alchemist: A Meta simulator used for Pervasive (large-scale) systems.
