@@ -3,7 +3,7 @@ incarnation: scafi
 variables:
   # SIMULATION VARIABLE
   last_greedy_episodes: { formula: 2.0 }
-  learning_episodes: { formula: 42.0 }
+  learning_episodes: { formula: 300.0 }
   episodes: &episodes { formula: 'learning_episodes + last_greedy_episodes' }
   greedy_each: { formula: learning_episodes }
   episode: &episode { min: 0, max: *episodes, step: 1, default: 0 }
@@ -30,7 +30,7 @@ _alpha: &alpha >
 _beta: &beta >
   it.unibo.learning.TimeVariable.independent(0.01)
 _epsilon: &epsilon >
-  it.unibo.learning.TimeVariable.exponentialDecayFunction(0.05, 40)
+  it.unibo.learning.TimeVariable.exponentialDecayFunction(0.9, 30)
 
 _actions: &actions >
   cats.data.NonEmptySet.of(0, 1, 2)

@@ -19,6 +19,7 @@ trait TemporalGradientRL extends RLLike {
     with TemporalStateManagement
     with GradientLikeLearning
     with ScafiAlchemistSupport
+    with FieldUtils
     with StandardSensors =>
   // move to another part?
   implicit class DoubleWithAlmostEquals(val d: Double) {
@@ -65,7 +66,8 @@ trait TemporalGradientRL extends RLLike {
       }
       val minOutput = evalState(minHood(nbr(output)))
       val maxOutput = evalState(maxHood(nbr(output)))
-      val recent = recentValues(windowDifferenceSize, State(maxOutput, minOutput))
+      val averageOutput = evalState(excludingSelf.sumHood(nbr(output)) / excludingSelf.reifyField(0).size)
+      val recent = recentValues(windowDifferenceSize, State(minOutput, maxOutput, averageOutput))
       History(recent.toList)
     }
 
@@ -113,7 +115,11 @@ object TemporalGradientRL {
   case object Same extends GradientDifference
   case class Slot(startMultiplier: Double, endMultiplier: Double) extends GradientDifference
 
-  case class State(minDifference: GradientDifference, maxDifference: GradientDifference)
+  case class State(
+      minDifference: GradientDifference,
+      maxDifference: GradientDifference,
+      meanDifference: GradientDifference
+  )
   case class History(states: Seq[State])
 
   sealed trait Action
@@ -127,10 +133,10 @@ object TemporalGradientRL {
   case class Ignore(upVelocity: Double) extends Action
   case object ConsiderNeighbourhood extends Action
   val storage = new LocalStorage[String]("gradientQ")
-  val q: MutableQ[History, Action] = new MutableQ[History, Action](Map.empty.withDefault(_ => 0.0))
-  //new MutableQ(
-  //  storage.load[MutableQ[History, Action]]("q").initialConfig.withDefault(_ => 0.0)
-  //) //
+  val q: MutableQ[History, Action] = //new MutableQ[History, Action](Map.empty.withDefault(_ => 0.0))
+    new MutableQ(
+      storage.load[MutableQ[History, Action]]("q").initialConfig.withDefault(_ => 0.0)
+    ) //
   // for the storage
   @SuppressWarnings(Array("org.wartremover.warts.All")) // because of macro expansion
   implicit def storageForGradientDifference: RW[GradientDifference] = macroRW[GradientDifference]

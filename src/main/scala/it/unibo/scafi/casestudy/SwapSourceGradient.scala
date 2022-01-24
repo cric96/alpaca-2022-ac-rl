@@ -11,8 +11,8 @@ import scala.collection.immutable.SortedSet
 class SwapSourceGradient extends HopCountLearningAlgorithms with SwapSourceLike with TemporalGradientRL {
   // Constants
   val maxCrfValue = 5
-  val maxRadiusMultiplier = 2
-  val buckets = 2
+  val maxRadiusMultiplier = 4
+  val buckets = 32
   val maxUpdateVelocity = 2
   val hopCountMetric: Metric = () => nbrRange()
   val crfRisingSpeed = 20
